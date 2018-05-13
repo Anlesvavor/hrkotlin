@@ -28,8 +28,11 @@ class RegionDAO : InterfazRegionDAO{
     }
 
     override fun readByCriteria(criteria: String): List<Region> {
-        val c = Conexion.getConexion()
-        val ps = c!!.prepareStatement("${Region.SELECT_ALL} $criteria")
+
+        //var regiones : Array<Region>
+        //val c = Conexion.getConexion()
+        //val ps = c!!.prepareStatement("${Region.SELECT_ALL} $criteria")
+        TODO()
 
     }
 
@@ -42,5 +45,4 @@ class RegionDAO : InterfazRegionDAO{
     }
 
     private fun makeRegion(rs : ResultSet) : Region = Region(rs.getLong(1), rs.getString(2))
-    }
 }

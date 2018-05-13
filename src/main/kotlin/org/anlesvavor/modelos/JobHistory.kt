@@ -21,7 +21,7 @@ class JobHistory(
         val TABLE: String = "job_history"
         val SELECT_ALL: String = "SELECT ${Modelo.makeFields(FIELDS)} FROM $TABLE"
         val SELECT_BY_ID: String = "$SELECT_ALL WHERE ${FIELDS[0]} = ?"
-        val INSERT: String = "INSERT INTO $TABLE (${Modelo.makeFields(FIELDS)}) VALUES "
+        val INSERT: String = "INSERT INTO $TABLE (${Modelo.makeFields(FIELDS)}) VALUES ${Modelo.addInterrogations(FIELDS)}"
         val UPDATE: String = "UPDATE $TABLE SET ${Modelo.makeUpdateFields(FIELDS)} WHERE ${FIELDS[0]} = ? AND ${FIELDS[1]} = ?"
         val DELETE: String = "DELETE FROM $TABLE WHERE ${FIELDS[0]} = ?"
 }

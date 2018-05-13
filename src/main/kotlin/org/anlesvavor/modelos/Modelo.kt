@@ -23,5 +23,11 @@ object Modelo{
         return fields
     }
 
-
+    fun addInterrogations(list : List<String>) : String {
+        var interrogations : String = ""
+        for (i in 1..list.size){
+            interrogations = if (i == 1) "?" else "$interrogations, ?"
+        }
+        return interrogations
+    }
 }
