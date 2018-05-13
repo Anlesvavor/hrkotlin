@@ -27,11 +27,11 @@ class Location {
 
     companion object Constantes {
 
-        val FIELDS = listOf("location_id" ,"street_addess", "postal_code", "city", "state_province", "country_id")
+        val FIELDS = listOf("location_id" ,"street_address", "postal_code", "city", "state_province", "country_id")
         val TABLE: String = "locations"
         val SELECT_ALL: String = "SELECT ${Modelo.makeFields(FIELDS)} FROM $TABLE "
         val SELECT_BY_ID: String = "$SELECT_ALL WHERE ${FIELDS[0]} = ?"
-        val INSERT: String = "INSERT INTO $TABLE (${Modelo.makeFields(FIELDS)}) VALUES ${Modelo.addInterrogations(FIELDS)}"
+        val INSERT: String = "INSERT INTO $TABLE (${Modelo.makeFields(FIELDS)}) VALUES (${Modelo.addInterrogations(FIELDS)})"
         val UPDATE: String = "UPDATE $TABLE SET ${Modelo.makeUpdateFields(FIELDS)} WHERE ${FIELDS[0]} = ?"
         val DELETE: String = "DELETE FROM $TABLE WHERE ${FIELDS[0]} = ?"
     }

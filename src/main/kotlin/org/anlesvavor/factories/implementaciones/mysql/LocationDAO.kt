@@ -58,7 +58,7 @@ class LocationDAO(_countryDAO : InterfazCountryDAO = CountryDAO()) : InterfazLoc
         ps.setLong(i++, obj.postalCode)
         ps.setString(i++, obj.city)
         ps.setString(i++, obj.stateProvince)
-        ps.setLong(i, obj.country.id)
+        ps.setLong(i++, obj.country.id)
         // el id del where
         ps.setLong(i, obj.id!!)
         ps.executeUpdate()
