@@ -15,7 +15,7 @@ class Job(
 
         val FIELDS = listOf("job_id", "job_title", "min_salary", "max_salary")
         val TABLE: String = "jobs"
-        val SELECT_ALL: String = "SELECT ${Modelo.makeFields(FIELDS)} FROM $TABLE"
+        val SELECT_ALL: String = "SELECT ${Modelo.makeFields(FIELDS)} FROM $TABLE "
         val SELECT_BY_ID: String = "$SELECT_ALL WHERE ${FIELDS[0]} = ?"
         val INSERT: String = "INSERT INTO $TABLE (${Modelo.makeFields(FIELDS)}) VALUES ${Modelo.addInterrogations(FIELDS)}"
         val UPDATE: String = "UPDATE $TABLE SET ${Modelo.makeUpdateFields(FIELDS)} WHERE ${FIELDS[0]} = ?"

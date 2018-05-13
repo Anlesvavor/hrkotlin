@@ -1,4 +1,4 @@
-package org.anlesvavor.factories.implementaciones.mysql.interfaces
+package org.anlesvavor.factories.implementaciones.mysql
 
 import org.anlesvavor.connections.Conexion
 import org.anlesvavor.factories.interfaces.InterfazRegionDAO
@@ -6,6 +6,7 @@ import org.anlesvavor.modelos.Region
 import java.sql.ResultSet
 
 class RegionDAO : InterfazRegionDAO{
+
     override fun create(obj: Region) {
         val c = Conexion.getConexion()
         val ps = c!!.prepareStatement(Region.INSERT)
@@ -28,20 +29,32 @@ class RegionDAO : InterfazRegionDAO{
     }
 
     override fun readByCriteria(criteria: String): List<Region> {
-
-        //var regiones : Array<Region>
-        //val c = Conexion.getConexion()
-        //val ps = c!!.prepareStatement("${Region.SELECT_ALL} $criteria")
-        TODO()
-
+        var regiones : MutableList<Region> = mutableListOf()
+        val c = Conexion.getConexion()
+        val ps = c!!.prepareStatement("${Region.SELECT_ALL}$criteria")
+        val rs = ps.executeQuery()
+        while (rs.next()) {
+            regiones.add(makeRegion(rs))
+        }
+        return regiones
     }
 
     override fun update(obj: Region) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val c = Conexion.getConexion()
+        val ps = c!!.prepareStatement(Region.UPDATE)
+        var i = 1
+        ps.setLong(i++, obj.id!!)
+        ps.setString(i++, obj.name)
+        // el id del where
+        ps.setLong(i, obj.id!!)
+        ps.executeUpdate()
     }
 
     override fun delete(id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val c = Conexion.getConexion()
+        val ps = c!!.prepareStatement(Region.DELETE)
+        ps.setLong(1, id)
+        ps.executeUpdate()
     }
 
     private fun makeRegion(rs : ResultSet) : Region = Region(rs.getLong(1), rs.getString(2))
