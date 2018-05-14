@@ -9,7 +9,7 @@ import org.anlesvavor.modelos.JobHistory
 import java.sql.Date
 import java.sql.ResultSet
 
-class JobHistoryDAO(_departmentDAO: DepartmentDAO, _jobDAO: JobDAO) : InterfazJobHistoryDAO{
+class JobHistoryDAO(_departmentDAO: DepartmentDAO = DepartmentDAO(), _jobDAO: InterfazJobDAO = JobDAO()) : InterfazJobHistoryDAO{
     var departmentDAO : InterfazDepartmentDAO = _departmentDAO
     var jobDAO : InterfazJobDAO = _jobDAO
     //var employeeDAO : EmployeeDAO = _employeeDAO
@@ -19,19 +19,19 @@ class JobHistoryDAO(_departmentDAO: DepartmentDAO, _jobDAO: JobDAO) : InterfazJo
         val ps = c!!.prepareStatement(JobHistory.INSERT)
         var i = 1
         ps.setLong(i++, obj.employee.id)
-        ps.setDate(i++, obj.startDate as Date?)
-        ps.setDate(i++, obj.endDate as Date?)
+        ps.setString(i++, obj.startDate )
+        ps.setString(i++, obj.endDate )
         ps.setLong(i++, obj.job.id)
         ps.setLong(i, obj.department.id)
         ps.executeUpdate()
     }
 
-    override fun readById(employeeId: Long, startDate: Date): JobHistory {
+    override fun readById(employeeId: Long, startDate: String): JobHistory {
         val c = Conexion.getConexion()
         val ps = c!!.prepareStatement(JobHistory.SELECT_BY_ID)
         var jobHistory = JobHistory()
         ps.setLong(1, employeeId)
-        ps.setDate(2, startDate)
+        ps.setString(2, startDate)
         val rs = ps.executeQuery()
         if (rs.next()) {
             jobHistory = makeJobHistory(rs)
@@ -55,29 +55,29 @@ class JobHistoryDAO(_departmentDAO: DepartmentDAO, _jobDAO: JobDAO) : InterfazJo
         val ps = c!!.prepareStatement(JobHistory.UPDATE)
         var i = 1
         ps.setLong(i++, obj.employee.id)
-        ps.setDate(i++, obj.startDate as Date?)
-        ps.setDate(i++, obj.endDate as Date?)
+        ps.setString(i++, obj.startDate )
+        ps.setString(i++, obj.endDate )
         ps.setLong(i++, obj.job.id)
         ps.setLong(i++, obj.department.id)
         // el id del where
         ps.setLong(i++, obj.job.id)
-        ps.setDate(i, obj.startDate as Date?)
+        ps.setString(i, obj.startDate)
         ps.executeUpdate()
     }
 
-    override fun delete(employeeId: Long, startDate: Date) {
+    override fun delete(employeeId: Long, startDate: String) {
         val c = Conexion.getConexion()
         val ps = c!!.prepareStatement(JobHistory.DELETE)
         ps.setLong(1, employeeId)
-        ps.setDate(2, startDate)
+        ps.setString(2, startDate)
         ps.executeUpdate()
     }
 
     private fun makeJobHistory(rs : ResultSet) : JobHistory =
         JobHistory(
             EmployeeDAO.readById(rs.getLong(1)),
-            rs.getDate(2),
-            rs.getDate(3),
+            rs.getString(2),
+            rs.getString(3),
             jobDAO.readById(rs.getLong(4)),
             departmentDAO.readById(rs.getLong(5))
         )

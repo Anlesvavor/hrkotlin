@@ -51,7 +51,7 @@ class EmployeeDAOTest {
         EmployeeDAO.create(juan)
         val employeeVacio = Employee()
         Assert.assertNotEquals(locationDAO.readById(juan.id),  employeeVacio)
-        locationDAO.delete(juan.id)
+        EmployeeDAO.delete(juan.id)
     }
 
     @Test

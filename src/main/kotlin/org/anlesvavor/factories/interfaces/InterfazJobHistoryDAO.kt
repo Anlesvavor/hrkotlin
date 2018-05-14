@@ -5,8 +5,8 @@ import java.sql.Date
 
 interface InterfazJobHistoryDAO {
     fun create(obj : JobHistory)
-    fun readById(employeeId: Long, startDate: Date) : JobHistory
+    fun readById(employeeId: Long, startDate: String) : JobHistory
     fun readByCriteria(criteria : String) : List<JobHistory>
     fun update(obj : JobHistory)
-    fun delete(employeeId: Long, startDate: Date)
+    fun delete(employeeId: Long, startDate: String)
 }

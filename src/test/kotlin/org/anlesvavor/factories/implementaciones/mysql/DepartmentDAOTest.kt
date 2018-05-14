@@ -52,7 +52,7 @@ class DepartmentDAOTest{
         departmentDAO.create(sistemas)
         val departmentVacio = Department()
         Assert.assertNotEquals(locationDAO.readById(sistemas.id),  departmentVacio)
-        locationDAO.delete(sistemas.id)
+        departmentDAO.delete(sistemas.id)
     }
 
     @Test
