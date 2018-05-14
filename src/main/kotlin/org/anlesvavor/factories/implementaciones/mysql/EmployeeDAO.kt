@@ -34,7 +34,7 @@ object EmployeeDAO: InterfazEmployeeDAO {
         ps.setString(i++, obj.lastName)
         ps.setString(i++, obj.email)
         ps.setString(i++, obj.phoneNumber)
-        ps.setDate(i++, obj.hireDate as Date?)
+        ps.setString(i++, obj.hireDate)
         ps.setLong(i++, obj.job.id)
         ps.setDouble(i++, obj.salary)
         ps.setFloat(i++, obj.commissionPct)
@@ -75,7 +75,7 @@ object EmployeeDAO: InterfazEmployeeDAO {
         ps.setString(i++, obj.lastName)
         ps.setString(i++, obj.email)
         ps.setString(i++, obj.phoneNumber)
-        ps.setDate(i++, obj.hireDate as Date?)
+        ps.setString(i++, obj.hireDate)
         ps.setLong(i++, obj.job.id)
         ps.setDouble(i++, obj.salary)
         ps.setFloat(i++, obj.commissionPct)
@@ -100,7 +100,7 @@ object EmployeeDAO: InterfazEmployeeDAO {
             rs.getString(3),
             rs.getString(4),
             rs.getString(5),
-            rs.getDate(6),
+            rs.getString(6),
             JobDAO.readById(rs.getLong(7)),
             rs.getDouble(8),
             rs.getFloat(9),
