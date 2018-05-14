@@ -12,7 +12,7 @@ class Employee(
     _job: Job = Job(),
     _salary: Double = 0.0,
     _commissionPct: Float = 0.0f,
-    _manager: Employee = Employee(),
+    _managerId: Long = 0,
     _department: Department = Department()
 ) {
     var id : Long = _id
@@ -24,7 +24,7 @@ class Employee(
     var job : Job = _job
     var salary : Double = _salary
     var commissionPct : Float = _commissionPct
-    var manager : Employee = _manager
+    var managerId : Long = _managerId
     var department : Department = _department
 
     companion object Constantes {
@@ -34,7 +34,7 @@ class Employee(
             "first_name",
             "last_name",
             "email",
-            "phone_nmber",
+            "phone_number",
             "hire_date",
             "job_id",
             "salary",
