@@ -1,11 +1,12 @@
 package org.anlesvavor.factories.interfaces
 
 import org.anlesvavor.modelos.JobHistory
+import java.sql.Date
 
 interface InterfazJobHistoryDAO {
     fun create(obj : JobHistory)
-    fun readById(id : Long) : JobHistory
+    fun readById(employeeId: Long, startDate: Date) : JobHistory
     fun readByCriteria(criteria : String) : List<JobHistory>
     fun update(obj : JobHistory)
-    fun delete(id : Long)
+    fun delete(employeeId: Long, startDate: Date)
 }

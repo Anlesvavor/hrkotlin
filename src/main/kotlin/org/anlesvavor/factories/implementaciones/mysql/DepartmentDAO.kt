@@ -1,21 +1,19 @@
 package org.anlesvavor.factories.implementaciones.mysql
 
 import org.anlesvavor.connections.Conexion
-import org.anlesvavor.factories.interfaces.InterfazCountryDAO
 import org.anlesvavor.factories.interfaces.InterfazDepartmentDAO
 import org.anlesvavor.factories.interfaces.InterfazEmployeeDAO
 import org.anlesvavor.factories.interfaces.InterfazLocationDAO
 import org.anlesvavor.modelos.Department
-import org.anlesvavor.modelos.Location
 import java.sql.ResultSet
 
 class DepartmentDAO(
-    _locationDAO: InterfazLocationDAO = LocationDAO(),
-    _employeeDAO: InterfazEmployeeDAO = employeeDAO()
+    _locationDAO: InterfazLocationDAO = LocationDAO()
+
 )  : InterfazDepartmentDAO{
 
     var locationDAO : InterfazLocationDAO = _locationDAO
-    var employeeDAO : InterfazEmployeeDAO = _employeeDAO
+    //var employeeDAO : InterfazEmployeeDAO = _employeeDAO
 
 
     override fun create(obj: Department) {
@@ -24,7 +22,7 @@ class DepartmentDAO(
         var i = 1
         ps.setLong(i++, obj.id!!)
         ps.setString(i++, obj.name)
-        ps.setLong(i++, obj.manager.id)
+        ps.setLong(i++, obj.manager)
         ps.setLong(i, obj.location.id)
         ps.executeUpdate()
     }
@@ -58,7 +56,7 @@ class DepartmentDAO(
         var i = 1
         ps.setLong(i++, obj.id!!)
         ps.setString(i++, obj.name)
-        ps.setLong(i++, obj.manager.id)
+        ps.setLong(i++, obj.manager)
         ps.setLong(i++, obj.location.id)
         // el id del where
         ps.setLong(i, obj.id!!)
@@ -76,8 +74,32 @@ class DepartmentDAO(
         Department(
             rs.getLong(1),
             rs.getString(2),
-            employeeDAO.readById(rs.getLong(3)),
+            rs.getLong(3),
             locationDAO.readById(rs.getLong(4))
         )
 
+    companion object {
+
+        val locationDAO : LocationDAO = LocationDAO()
+
+        fun readById(id: Long): Department {
+            val c = Conexion.getConexion()
+            val ps = c!!.prepareStatement(Department.SELECT_BY_ID)
+            var department = Department()
+            ps.setLong(1, id)
+            val rs = ps.executeQuery()
+            if (rs.next()) {
+                department = makeDepartment(rs)
+            }
+            return department
+        }
+
+        private fun makeDepartment(rs : ResultSet) : Department =
+            Department(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getLong(3),
+                locationDAO.readById(rs.getLong(4))
+            )
+    }
 }

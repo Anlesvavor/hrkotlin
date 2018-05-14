@@ -10,13 +10,20 @@ import org.anlesvavor.modelos.Employee
 import java.sql.Date
 import java.sql.ResultSet
 
-class employeeDAO(
-    _departmentDAO : InterfazDepartmentDAO = DepartmentDAO(),
-    _jobDAO : InterfazJobDAO = JobDAO()
-) : InterfazEmployeeDAO {
+object EmployeeDAO: InterfazEmployeeDAO {
 
-    var departmentDAO : InterfazDepartmentDAO = _departmentDAO
-    var jobDAO : InterfazJobDAO = _jobDAO
+    /**
+     * Se hace esta clase en objeto con el fin de que los metodos sean "estaticos" para
+     * poder usarlo en DepartmentDAO con el fin de quitar la propiedad
+     * EmployeeDAO y evitar una referencia circular que al final provocará
+     * un java.lang.StackOverflowError
+     */
+
+    /**
+     * declarar un Objeto es declarar un Singleton en Kotlin
+     */
+
+    //var jobDAO : InterfazJobDAO = JobDAO()
 
     override fun create(obj: Employee) {
         val c = Conexion.getConexion()
@@ -94,10 +101,46 @@ class employeeDAO(
             rs.getString(4),
             rs.getString(5),
             rs.getDate(6),
-            jobDAO.readById(rs.getLong(7)),
+            JobDAO.readById(rs.getLong(7)),
             rs.getDouble(8),
             rs.getFloat(9),
             rs.getLong(10),
-            departmentDAO.readById(rs.getLong(11))
+            DepartmentDAO.readById(rs.getLong(11)) //raedById "estático"
         )
+
+
+    /*
+    companion object {
+        val jobDAO : JobDAO = JobDAO()
+        val departmentDAO : DepartmentDAO = DepartmentDAO()
+
+        fun staticReadById(id : Long) : Employee {
+            val c = Conexion.getConexion()
+            val ps = c!!.prepareStatement(Employee.SELECT_BY_ID)
+            var employee = Employee()
+            ps.setLong(1, id)
+            val rs = ps.executeQuery()
+            if (rs.next()) {
+                employee = makeEmployee(rs)
+            }
+            return employee
+        }
+
+
+        private fun makeEmployee(rs : ResultSet) : Employee =
+            Employee(
+                rs.getLong(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5),
+                rs.getDate(6),
+                jobDAO.readById(rs.getLong(7)),
+                rs.getDouble(8),
+                rs.getFloat(9),
+                rs.getLong(10),
+                departmentDAO.readById(rs.getLong(11))
+            )
+    }
+    */
 }

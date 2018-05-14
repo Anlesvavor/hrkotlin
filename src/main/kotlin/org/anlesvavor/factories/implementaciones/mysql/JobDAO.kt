@@ -61,4 +61,22 @@ class JobDAO : InterfazJobDAO {
     }
 
     private fun makeJob(rs : ResultSet) : Job = Job(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4))
+
+    companion object {
+
+        fun readById(id: Long): Job {
+            val c = Conexion.getConexion()
+            val ps = c!!.prepareStatement(Job.SELECT_BY_ID)
+            var job = Job()
+            ps.setLong(1, id)
+            val rs = ps.executeQuery()
+            if (rs.next()) {
+                job = makeJob(rs)
+            }
+            return job
+        }
+
+        private fun makeJob(rs : ResultSet) : Job = Job(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getDouble(4))
+
+    }
 }
